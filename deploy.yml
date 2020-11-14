@@ -1,0 +1,20 @@
+---
+- name: Deploy environment locally
+  hosts: localhost
+
+  tasks:
+  - name: install packages
+    become: true
+    package:
+      name:
+        - git
+        - screenfetch
+        - vim
+      state: present
+
+  - name: copy dotfiles
+    copy: src={{ item.src }} dest={{ item.dest }}
+    with_items:
+      - { src: 'bashrc', dest: '~/.bashrc' }
+      - { src: 'vimrc', dest: '~/.vimrc' }
+      - { src: 'gitconfig', dest: '~/.gitconfig' }
