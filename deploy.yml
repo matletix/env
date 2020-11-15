@@ -1,6 +1,14 @@
 ---
 - name: Deploy environment locally
   hosts: localhost
+  vars:
+    playbook_dir: "{{ lookup('env', 'PLAYBOOK_DIR') }}"
+    symlinks: "{{ lookup('env', 'SYMLINKS') }}"
+    config_mapping:
+      - { src: 'bashrc', dest: '~/.bashrc' }
+      - { src: 'vimrc', dest: '~/.vimrc' }
+      - { src: 'gitconfig', dest: '~/.gitconfig' }
+      - { src: 'neofetch.conf', dest: '~/.config/neofetch/config.conf' }
 
   tasks:
   - name: install packages
@@ -13,10 +21,18 @@
         - vim
       state: present
 
-  - name: copy dotfiles
-    copy: src=config_files/{{ item.src }} dest={{ item.dest }}
-    with_items:
-      - { src: 'bashrc', dest: '~/.bashrc' }
-      - { src: 'vimrc', dest: '~/.vimrc' }
-      - { src: 'gitconfig', dest: '~/.gitconfig' }
-      - { src: 'neofetch.conf', dest: '~/.config/neofetch/config.conf' }
+  - name: create symlinks to config files
+    file:
+      src: "{{ playbook_dir }}/config_files/{{ item.src }}"
+      dest: "{{ item.dest }}"
+      state: link
+      force: yes
+    with_items: "{{ config_mapping }}"
+    when: symlinks == "true"
+
+  - name: copy config files
+    copy:
+      src: "{{ playbook_dir }}/config_files/{{ item.src }}"
+      dest: "{{ item.dest }}"
+    with_items: "{{ config_mapping }}"
+    when: symlinks == "false"
