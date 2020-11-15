@@ -1,7 +1,7 @@
 ## Description
 Repository for versioning my linux environment (packages and configuration files).
 
-Deploy the environment locally with :
+Deploy the environment locally, for your current user, with :
 ```bash
 make install
 ```
