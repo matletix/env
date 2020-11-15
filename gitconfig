@@ -1,13 +1,14 @@
 [user]
 	name = Mathieu Rollet
 	email = matletix@gmail.com
+	username = matletix
 [core]
 	editor = vim
 [diff]
-    tool = vimdiff
+	tool = vimdiff
 [difftool]
-    prompt = false
+	prompt = false
 [merge]
 	tool = vimdiff
 [alias]
-    d = difftool
+	d = difftool
