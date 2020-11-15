@@ -7,48 +7,58 @@ PS1='[\u@\h \W]\$ '
 # Enable completion with sudo and man
 complete -cf sudo
 complete -cf man
-complete -cf pacman
 
-# set the default text editor
+# Set the default text editor
 export EDITOR=vim
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
+# Don't put duplicate lines or lines starting with space in the history.
+# Increase history size.
 HISTCONTROL=ignoreboth
+HISTSIZE=100000
+HISTFILESIZE=100000
 
-# fancy colored prompt
-# https://wiki.archlinux.org/index.php/Color_Bash_Prompt
+# Customized prompt
 set_prompt () {
-    Last_Command=$? # Must come first!
-    Blue='\[\e[01;34m\]'
-    White='\[\e[01;37m\]'
-    Red='\[\e[01;31m\]'
-    Green='\[\e[01;32m\]'
-    Reset='\[\e[00m\]'
-    FancyX='\342\234\227'
-    Checkmark='\342\234\223'
+    LAST_COMMAND=$?
+    COLOR_BLUE='\[\e[01;34m\]'
+    COLOR_WHITE='\[\e[01;37m\]'
+    COLOR_RED='\[\e[01;31m\]'
+    COLOR_GREEN='\[\e[01;32m\]'
+    COLOR_YELLOW='\[\e[01;33m\]'
+    COLOR_CYAN='\[\e[01;36m\]'
+    COLOR_RESET='\[\e[00m\]'
 
-    # Add a bright white exit status for the last command
-    PS1="$White\$? "
-    # If it was successful, print a green check mark. Otherwise, print
-    # a red X.
-    if [[ $Last_Command == 0 ]]; then
-        PS1+="$Green$Checkmark "
+    # Print last command exit status in green if successful or in red if not.
+    if [[ $LAST_COMMAND == 0 ]]; then
+        PS1="$COLOR_GREEN$LAST_COMMAND "
     else
-        PS1+="$Red$FancyX "
+        PS1="$COLOR_RED$LAST_COMMAND "
     fi
     # If root, just print the host in red. Otherwise, print the current user
     # and host in green.
     if [[ $EUID == 0 ]]; then
-        PS1+="$Red\\h "
+        PS1+="$COLOR_RED\\h "
     else
-        PS1+="$Green\\u@\\h "
+        PS1+="$COLOR_GREEN\\u@\\h "
     fi
-    # Print the working directory and prompt marker in blue, and reset
-    # the text color to the default.
-    PS1+="$Blue\\w \\\$$Reset "
+    # Print the working directory in blue
+    PS1+="$COLOR_BLUE\\w "
+
+    # Print git current branch in yellow if we are in a git repository
+    source /usr/share/git-core/contrib/completion/git-prompt.sh
+    if [[ -n "$(__git_ps1 "(%s)")" ]]; then
+        PS1+="$COLOR_YELLOW"'$(__git_ps1 "(%s)") '
+    fi
+
+    # Reset color and print prompt marker ('#' if root, '$' otherwise)
+    if [[ $EUID == 0 ]]; then
+        MARKER="#"
+    else
+        MARKER="$"
+    fi
+    PS1+="$COLOR_RESET$MARKER "
 }
 PROMPT_COMMAND='set_prompt'
 
-# screenfetch for showing system informations at the opening of a prompt
-screenfetch
+# use neofetch for displaying ASCII art distribution logo and system information
+neofetch
