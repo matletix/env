@@ -5,6 +5,8 @@ To deploy the environment locally for your current user, use:
 ```bash
 make install
 ```
+*Warning: deploying the environment overrides your existing configuration files*
+
 By default, symbolic links pointing to the configuration files in the `config_files` directory will be created at the relevant location
 in the home folder of the current user. This allows any modification to the versioned configuration files to be reflected
 in the git repository.
