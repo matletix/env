@@ -12,3 +12,5 @@
 	tool = vimdiff
 [alias]
 	d = difftool
+[color]
+	ui = true
