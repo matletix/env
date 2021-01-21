@@ -45,7 +45,7 @@ set_prompt () {
     PS1+="$COLOR_BLUE\\w "
 
     # Print git current branch in yellow if we are in a git repository
-    source /usr/share/git-core/contrib/completion/git-prompt.sh
+    source ~/.git-prompt.sh
     if [[ -n "$(__git_ps1 "(%s)")" ]]; then
         PS1+="$COLOR_YELLOW"'$(__git_ps1 "(%s)") '
     fi
