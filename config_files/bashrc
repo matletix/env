@@ -1,7 +1,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
 # Enable completion with sudo and man
@@ -63,5 +62,9 @@ PROMPT_COMMAND='set_prompt'
 # Add local bin folder to path
 PATH=~/.local/bin:$PATH
 
-# use neofetch for displaying ASCII art distribution logo and system information
+# Set aliases
+alias ls='ls --color=auto'
+alias python='python3'  # Use python3 by default
+
+# Use neofetch for displaying ASCII art distribution logo and system information
 neofetch
