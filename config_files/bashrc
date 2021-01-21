@@ -60,5 +60,8 @@ set_prompt () {
 }
 PROMPT_COMMAND='set_prompt'
 
+# Add local bin folder to path
+PATH=~/.local/bin:$PATH
+
 # use neofetch for displaying ASCII art distribution logo and system information
 neofetch
