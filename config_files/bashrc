@@ -18,6 +18,10 @@ HISTFILESIZE=100000
 
 # Customized prompt
 set_prompt () {
+
+    # Save history buffer to the .bash_history file and flush it
+    history -a; history -c; history -r;
+
     LAST_COMMAND=$?
     COLOR_BLUE='\[\e[01;34m\]'
     COLOR_WHITE='\[\e[01;37m\]'
