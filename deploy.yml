@@ -19,6 +19,7 @@
         - git
         - neofetch
         - vim
+        - jq
       state: present
 
   - name: create symlinks to config files
